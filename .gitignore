@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 weatherEvents_jan2016-Dec2020.csv
+
 # C extensions
 *.so
 
