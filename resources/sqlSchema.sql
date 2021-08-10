@@ -24,12 +24,12 @@ CREATE TABLE weatherhist(
 	City varchar NOT NULL, 
 	State varchar NOT NULL,
 	Duration decimal NOT NULL,
-	Year date NOT NULL
+	Year integer NOT NULL
 );
 
 --Create the table for Summary View of calculated values
 CREATE TABLE SummaryView(
-	Year date NOT NULL,
+	Year integer NOT NULL,
 	City varchar NOT NULL,
 	Type varchar NOT NULL,
 	Duration decimal NOT NULL,
