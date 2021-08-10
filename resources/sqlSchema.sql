@@ -1,11 +1,3 @@
---Create Database 
---CREATE DATABASE weathermap
---    WITH 
---    OWNER = postgres
---    ENCODING = 'UTF8'
---    CONNECTION LIMIT = -1;
-
-
 -- Create tables for Project3 Weather Events
 -- Before creating any tables, drop the tables if the already exsists
 Drop TABLE weatherhist;
@@ -23,12 +15,13 @@ CREATE TABLE weatherhist(
 	Lng decimal NOT NULL, 
 	City varchar NOT NULL, 
 	State varchar NOT NULL,
-	Duration decimal NOT NULL
+	Duration decimal NOT NULL,
+	Year integer NOT NULL
 );
 
 --Create the table for Summary View of calculated values
 CREATE TABLE SummaryView(
-	Year date NOT NULL,
+	Year integer NOT NULL,
 	City varchar NOT NULL,
 	Type varchar NOT NULL,
 	Duration decimal NOT NULL,
@@ -36,3 +29,6 @@ CREATE TABLE SummaryView(
 	Lat decimal  NOT NULL, 
 	Lng decimal NOT NULL	
 );
+
+select *
+from SummaryView;
