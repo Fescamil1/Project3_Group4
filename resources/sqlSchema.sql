@@ -6,9 +6,10 @@
 --    CONNECTION LIMIT = -1;
 
 
--- Create table for Project3 Weather Events
+-- Create tables for Project3 Weather Events
 -- Before creating any tables, drop the tables if the already exsists
 Drop TABLE weatherhist;
+Drop TABLE SummaryView;
 
 --create table for the data
 CREATE TABLE weatherhist(
@@ -23,4 +24,15 @@ CREATE TABLE weatherhist(
 	City varchar NOT NULL, 
 	State varchar NOT NULL,
 	Duration decimal NOT NULL
+);
+
+--Create the table for Summary View of calculated values
+CREATE TABLE SummaryView(
+	Year date NOT NULL,
+	City varchar NOT NULL,
+	Type varchar NOT NULL,
+	Duration decimal NOT NULL,
+	avg_perc_year decimal NOT NULL, 
+	Lat decimal  NOT NULL, 
+	Lng decimal NOT NULL	
 );
