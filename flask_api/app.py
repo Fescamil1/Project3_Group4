@@ -17,7 +17,7 @@ Base = automap_base()
 
 # Database Setup
 engine = create_engine(
-    'postgresql://postgres:postgress@localhost:5432/weathermap')
+    'postgresql://postgres:postgres#@localhost:5432/weathermap')
 connection = engine.connect()
 
 # reflect the tables
@@ -26,6 +26,8 @@ Base.prepare(engine, reflect=True)
 # Save reference to the tables
 
 Weathermap = Base.classes.weatherhist
+Weather_summary = Base.classes.SummaryView
+
 
 # Create our session (link) from Python to the DB
 session = Session(engine)
@@ -42,15 +44,15 @@ def home_page():
     """List all available api routes."""
     return (
         f"<br/>"
-        f"/api/v1.0/weather<br/>"
+        f"/api/v1.0/weatherhist<br/>"
         f"<br/>"
         f"<br/>"
-        f"/api/v1.0/us_map_api<br/>"
+        f"/api/v1.0/SummaryView<br/>"
         f"<br/>"
     )
 
-@app.route("/api/v1.0/weather")
-def weather():
+@app.route("/api/v1.0/weatherhist")
+def weatherhist():
     # Create our session (link) from Python to the DB
     session = Session(engine)
     
@@ -66,38 +68,43 @@ def weather():
         weather_dict["city"] = city
         weather_dict["type"] = type
         weather_dict["severity"] = severity
-        weather_dict["lat"] = lat
-        weather_dict["lng"] = lng
-        weather_dict["duration"] = duration
+        weather_dict["lat"] = float(lat)
+        weather_dict["lng"] = float(lng)
+        weather_dict["duration"] = float(duration)
         weather_dict["eventid"] = eventid        
         all_weather_list.append(weather_dict)
 
     return jsonify(all_weather_list)
 
 
-@app.route("/api/v1.0/us_map_api")
-def us_map_api():
+@app.route("/api/v1.0/SummaryView")
+def SummaryView():
     # Create our session (link) from Python to the DB
     session = Session(engine)
     
     # Query
-    api_map = session.query(Weathermap.city, Weathermap.state, Weathermap.lat, Weathermap.lng).filter(or_(Weathermap.state == "TX", Weathermap.state == "CA",\
-            Weathermap.state == "AZ", Weathermap.state == "IL", Weathermap.state == "NY", Weathermap.state == "PA")).order_by(Weathermap.city).\
-            group_by(Weathermap.city, Weathermap.state, Weathermap.lat, Weathermap.lng).all()
+    api_map = session.query(Weather_summary.year, Weather_summary.city, Weather_summary.type, Weather_summary.duration, Weather_summary.avg_perc_year, Weather_summary.lat, Weather_summary.lng)
+    
+    # .filter(or_(Weathermap.state == "TX", Weathermap.state == "CA",\
+    # Weathermap.state == "AZ", Weathermap.state == "IL", Weathermap.state == "NY", Weathermap.state == "PA")).order_by(Weathermap.city).\
+    # group_by(Weathermap.city, Weathermap.state, Weathermap.lat, Weathermap.lng).all()
     
     session.close()
 
     # To create a dictionary
-    all_map_list = []
-    for city, state, lat, lng in api_map:
-        us_map_dict = {}
-        us_map_dict["city"] = city
-        us_map_dict["state"] = state
-        us_map_dict["lat"] = lat
-        us_map_dict["lng"] = lng
-        all_map_list.append(us_map_dict)
+    all_summary_view_list = []
+    for year, city, type, duration, avg_perc_year, lat, lng in api_map:
+        us_summary_view = {}
+        us_summary_view["year"] = year
+        us_summary_view["type"] = city
+        us_summary_view["type"] = type
+        us_summary_view["duration"] = float(duration)
+        us_summary_view["avg_perc_year"] = float(avg_perc_year)
+        us_summary_view["lat"] = float(lat)
+        us_summary_view["lng"] = float(lng)
+        all_summary_view_list.append(us_summary_view)
 
-    return jsonify(all_map_list)
+    return jsonify(all_summary_view_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
