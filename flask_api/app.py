@@ -4,21 +4,21 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
-from sqlalchemy import or_
+# from sqlalchemy import or_
 
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_marshmallow import Marshmallow
 import datetime as dt
 
 #################################################
 
-Base = automap_base()
-
 # Database Setup
 engine = create_engine(
-    'postgresql://postgres:postgres#@localhost:5432/weathermap')
+    'postgresql://postgres:postgres@localhost:5432/weather_db')
 connection = engine.connect()
+
+Base = automap_base()
 
 # reflect the tables
 Base.prepare(engine, reflect=True)
@@ -26,8 +26,7 @@ Base.prepare(engine, reflect=True)
 # Save reference to the tables
 
 Weathermap = Base.classes.weatherhist
-Weather_summary = Base.classes.SummaryView
-
+Summaryview = Base.classes.summaryview
 
 # Create our session (link) from Python to the DB
 session = Session(engine)
@@ -38,7 +37,6 @@ session.close()
 # Flask Setup
 app = Flask(__name__)
 
-
 @app.route("/")
 def home_page():
     """List all available api routes."""
@@ -47,12 +45,12 @@ def home_page():
         f"/api/v1.0/weatherhist<br/>"
         f"<br/>"
         f"<br/>"
-        f"/api/v1.0/SummaryView<br/>"
+        f"/api/v1.0/summaryview<br/>"
         f"<br/>"
     )
 
 @app.route("/api/v1.0/weatherhist")
-def weatherhist():
+def weatherhist_func():
     # Create our session (link) from Python to the DB
     session = Session(engine)
     
@@ -77,35 +75,33 @@ def weatherhist():
     return jsonify(all_weather_list)
 
 
-@app.route("/api/v1.0/SummaryView")
-def SummaryView():
+@app.route("/api/v1.0/summaryview")
+def summaryview_func():
     # Create our session (link) from Python to the DB
+    
     session = Session(engine)
     
     # Query
-    api_map = session.query(Weather_summary.year, Weather_summary.city, Weather_summary.type, Weather_summary.duration, Weather_summary.avg_perc_year, Weather_summary.lat, Weather_summary.lng)
-    
-    # .filter(or_(Weathermap.state == "TX", Weathermap.state == "CA",\
-    # Weathermap.state == "AZ", Weathermap.state == "IL", Weathermap.state == "NY", Weathermap.state == "PA")).order_by(Weathermap.city).\
-    # group_by(Weathermap.city, Weathermap.state, Weathermap.lat, Weathermap.lng).all()
-    
+    api_map = session.query(Summaryview.index, Summaryview.year, Summaryview.city, Summaryview.type, Summaryview.duration,
+                            Summaryview.avg_perc_year, Summaryview.lat, Summaryview.lng).all()
+  
     session.close()
 
     # To create a dictionary
     all_summary_view_list = []
-    for year, city, type, duration, avg_perc_year, lat, lng in api_map:
+    for index, year, city, type, duration, avg_perc_year, lat, lng, in api_map:
         us_summary_view = {}
+        us_summary_view["index"] = index
         us_summary_view["year"] = year
-        us_summary_view["type"] = city
+        us_summary_view["city"] = city
         us_summary_view["type"] = type
         us_summary_view["duration"] = float(duration)
         us_summary_view["avg_perc_year"] = float(avg_perc_year)
         us_summary_view["lat"] = float(lat)
-        us_summary_view["lng"] = float(lng)
+        us_summary_view["lng"] = float(lng)        
         all_summary_view_list.append(us_summary_view)
 
     return jsonify(all_summary_view_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
-
