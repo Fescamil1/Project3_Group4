@@ -72,7 +72,7 @@ def weatherhist_func():
         weather_dict["eventid"] = eventid        
         all_weather_list.append(weather_dict)
 
-    return jsonify(all_weather_list)
+    return jsonify({"weatherhist": all_weather_list})
 
 
 @app.route("/api/v1.0/summaryview")
@@ -100,8 +100,10 @@ def summaryview_func():
         us_summary_view["lat"] = float(lat)
         us_summary_view["lng"] = float(lng)        
         all_summary_view_list.append(us_summary_view)
-
-    return jsonify(all_summary_view_list)
+         
+    return jsonify({"summaryview": all_summary_view_list})
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
