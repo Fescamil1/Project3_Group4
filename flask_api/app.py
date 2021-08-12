@@ -10,7 +10,7 @@ from flask import Flask, jsonify
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_marshmallow import Marshmallow
 import datetime as dt
-
+from flask_cors import CORS
 #################################################
 
 # Database Setup
@@ -36,7 +36,7 @@ session.close()
 
 # Flask Setup
 app = Flask(__name__)
-
+CORS(app)
 @app.route("/")
 def home_page():
     """List all available api routes."""
@@ -49,7 +49,7 @@ def home_page():
         f"<br/>"
     )
 
-@app.route("/api/v1.0/weatherhist")
+@app.route("/api/v1.0/weatherhist",methods=['GET'])
 def weatherhist_func():
     # Create our session (link) from Python to the DB
     session = Session(engine)
@@ -72,7 +72,9 @@ def weatherhist_func():
         weather_dict["eventid"] = eventid        
         all_weather_list.append(weather_dict)
 
-    return jsonify({"weatherhist": all_weather_list})
+    response = jsonify({"weatherhist": all_weather_list})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route("/api/v1.0/summaryview")
