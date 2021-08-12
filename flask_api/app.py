@@ -10,7 +10,7 @@ from flask import Flask, jsonify
 # from flask_sqlalchemy import SQLAlchemy
 # from flask_marshmallow import Marshmallow
 import datetime as dt
-from flask_cors import CORS
+
 #################################################
 
 # Database Setup
@@ -36,16 +36,8 @@ session.close()
 
 # Flask Setup
 app = Flask(__name__)
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 
-=======
-CORS(app)
->>>>>>> 86d9b849362dd3b315b53ed5200546463f0d77fc
-=======
-CORS(app)
->>>>>>> 4283242931e9f62cb43e6c9629f78e3cdf11e49a
 @app.route("/")
 def home_page():
     """List all available api routes."""
@@ -58,16 +50,8 @@ def home_page():
         f"<br/>"
     )
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 @app.route("/api/v1.0/weatherhist")
-=======
-@app.route("/api/v1.0/weatherhist",methods=['GET'])
->>>>>>> 86d9b849362dd3b315b53ed5200546463f0d77fc
-=======
-@app.route("/api/v1.0/weatherhist",methods=['GET'])
->>>>>>> 4283242931e9f62cb43e6c9629f78e3cdf11e49a
 def weatherhist_func():
     # Create our session (link) from Python to the DB
     session = Session(engine)
@@ -91,19 +75,7 @@ def weatherhist_func():
         weather_dict["eventid"] = eventid
         all_weather_list.append(weather_dict)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     return jsonify(all_weather_list)
-=======
-    response = jsonify({"weatherhist": all_weather_list})
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
->>>>>>> 86d9b849362dd3b315b53ed5200546463f0d77fc
-=======
-    response = jsonify({"weatherhist": all_weather_list})
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
->>>>>>> 4283242931e9f62cb43e6c9629f78e3cdf11e49a
 
 
 @app.route("/api/v1.0/summaryview")
