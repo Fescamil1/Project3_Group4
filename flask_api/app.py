@@ -36,7 +36,16 @@ session.close()
 
 # Flask Setup
 app = Flask(__name__)
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+
+=======
 CORS(app)
+>>>>>>> 86d9b849362dd3b315b53ed5200546463f0d77fc
+=======
+CORS(app)
+>>>>>>> 4283242931e9f62cb43e6c9629f78e3cdf11e49a
 @app.route("/")
 def home_page():
     """List all available api routes."""
@@ -49,13 +58,23 @@ def home_page():
         f"<br/>"
     )
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+@app.route("/api/v1.0/weatherhist")
+=======
 @app.route("/api/v1.0/weatherhist",methods=['GET'])
+>>>>>>> 86d9b849362dd3b315b53ed5200546463f0d77fc
+=======
+@app.route("/api/v1.0/weatherhist",methods=['GET'])
+>>>>>>> 4283242931e9f62cb43e6c9629f78e3cdf11e49a
 def weatherhist_func():
     # Create our session (link) from Python to the DB
     session = Session(engine)
-    
-    # Query  
-    api_layout = session.query(Weathermap.city, Weathermap.type, Weathermap.severity, Weathermap.lat, Weathermap.lng, Weathermap.duration,Weathermap.eventid).order_by(Weathermap.city).all()
+
+    # Query
+    api_layout = session.query(Weathermap.city, Weathermap.type, Weathermap.severity, Weathermap.lat,
+                               Weathermap.lng, Weathermap.duration, Weathermap.eventid).order_by(Weathermap.city).all()
 
     session.close()
 
@@ -69,24 +88,34 @@ def weatherhist_func():
         weather_dict["lat"] = float(lat)
         weather_dict["lng"] = float(lng)
         weather_dict["duration"] = float(duration)
-        weather_dict["eventid"] = eventid        
+        weather_dict["eventid"] = eventid
         all_weather_list.append(weather_dict)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    return jsonify(all_weather_list)
+=======
     response = jsonify({"weatherhist": all_weather_list})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+>>>>>>> 86d9b849362dd3b315b53ed5200546463f0d77fc
+=======
+    response = jsonify({"weatherhist": all_weather_list})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+>>>>>>> 4283242931e9f62cb43e6c9629f78e3cdf11e49a
 
 
 @app.route("/api/v1.0/summaryview")
 def summaryview_func():
     # Create our session (link) from Python to the DB
-    
+
     session = Session(engine)
-    
+
     # Query
     api_map = session.query(Summaryview.index, Summaryview.year, Summaryview.city, Summaryview.type, Summaryview.duration,
                             Summaryview.avg_perc_year, Summaryview.lat, Summaryview.lng).all()
-  
+
     session.close()
 
     # To create a dictionary
@@ -100,12 +129,11 @@ def summaryview_func():
         us_summary_view["duration"] = float(duration)
         us_summary_view["avg_perc_year"] = float(avg_perc_year)
         us_summary_view["lat"] = float(lat)
-        us_summary_view["lng"] = float(lng)        
+        us_summary_view["lng"] = float(lng)
         all_summary_view_list.append(us_summary_view)
-         
-    return jsonify({"summaryview": all_summary_view_list})
+
+    return jsonify(all_summary_view_list)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
