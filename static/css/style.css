@@ -1,6 +1,15 @@
+body{  
+  height: 100%; background-color: rgb(80, 134, 184);  
+  background-image: linear-gradient(to right, rgb(236, 139, 139), rgb(138, 138, 243));
+    background: url('background.PNG') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
 .jumbotron {color:rgb(18, 16, 138); background-image: linear-gradient(to right, rgb(152, 222, 243), rgb(186, 186, 247));
   font-weight: bold; border-style: solid;}
-
 
 body {
   padding: 0;
@@ -17,17 +26,6 @@ h5 {
   text-align: center;
   font-size: 15px;
 }
-
-body,
-html {
-  /* height: 100%; background-color: rgb(80, 134, 184); */
-  /* background-image: linear-gradient(to right, rgb(236, 139, 139), rgb(138, 138, 243)); */
-    background: url('backgroundv2.PNG') no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-} 
 
 #map {
   height: 375px;
@@ -54,10 +52,7 @@ html {
   text-align: center;
 }
 
-
 .well {border-style: solid; border-color: rgb(18, 16, 138)};
-
-
 
 .legend {
   padding: 6px 8px;
