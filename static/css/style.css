@@ -8,8 +8,11 @@ body{
     background-size: cover;
 }
 
-.jumbotron {color:rgb(18, 16, 138); background-image: linear-gradient(to right, rgb(152, 222, 243), rgb(186, 186, 247));
-  font-weight: bold; border-style: solid;}
+.jumbotron {
+  color:rgb(18, 16, 138); 
+  background-image: linear-gradient(to right, rgb(152, 222, 243), rgb(186, 186, 247));
+  font-weight: bold; 
+  border-style: solid;}
 
 body {
   padding: 0;
@@ -37,7 +40,7 @@ h5 {
 
 #bar {
   height: 375px;
-  width: 300px;
+  width: 550px;
   display: block;
   border-style: solid;
   border-color: rgb(18, 16, 138);
@@ -52,7 +55,18 @@ h5 {
   text-align: center;
 }
 
-.well {border-style: solid; border-color: rgb(18, 16, 138)};
+#bubble {
+  height: 375px;
+  width: 1150px;
+  display: block;
+  border-style: solid;
+  border-color: rgb(18, 16, 138);
+  text-align: center;
+}
+
+.well {
+  border-style: solid; 
+  border-color: rgb(18, 16, 138)};
 
 .legend {
   padding: 6px 8px;
