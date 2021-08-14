@@ -24,46 +24,62 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 jumbotron text-center border">
-        <h1> U.S. Weather 2016-2017</h1>
+        <h1> U.S. Weather 2016-2020</h1>
         <p>Use the interactive charts below to explore the dataset</p>
         <div style="margin: 0px; height: 100%"><img
             style="-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 90%);transition: background-color 300ms;"
             src="https://raw.githubusercontent.com/dipu-bd/vue-skycons/master/images/icons.gif">
         </div>
+
+        <br><br>
+
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <div class="well">
+              <h5>Select Weather Event:</h5>
+              <select id="selDataset1" onchange="optionChanged(this.value)"></select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="well">
+              <h5>Select City:</h5>
+              <select id="selDataset2" onchange="optionChanged(this.value)"></select>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
+
+    <p>
+    <p>
+    <p>
+
     <div class="row">
-      <div class="col-md-2">
-        <div class="well">
-          <h5>Select Weather Event:</h5>
-          <select id="selDataset1" onchange="optionChanged(this.value)"></select>
-        </div>
-        <div class="well">
-          <h5>Select City:</h5>
-          <select id="selDataset2" onchange="optionChanged(this.value)"></select>
-        </div>
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">Summary: </h3>
-          </div>
-          <div id="summary-data" class="panel-body"></div>
-        </div>
-      </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div id="bar"></div>
       </div>
       <div class="col-md-6">
         <div id="map"></div>
       </div>
     </div>
+
     <p>
     <p>
     <p>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div id="bubble"></div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-12">
         <div id="table"></div>
       </div>
     </div>
+
   </div>
 
   <!-- Leaflet JS -->
