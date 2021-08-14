@@ -15,7 +15,7 @@ from flask_cors import CORS
 
 # Database Setup
 engine = create_engine(
-    'postgresql://postgres:postgres@localhost:5432/weather_db')
+    'postgresql://postgres:postgres#@localhost:5432/weather_db')
 connection = engine.connect()
 
 Base = automap_base()
@@ -76,7 +76,7 @@ def weatherhist_func():
         weather_dict["eventid"] = eventid
         all_weather_list.append(weather_dict)
 
-    response = jsonify({all_weather_list})
+    response = jsonify(all_weather_list)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
