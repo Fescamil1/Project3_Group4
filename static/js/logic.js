@@ -42,6 +42,30 @@ d3.json(json).then(function (data) {
     };
 });
 
+let trace1 = {
+
+    x: ["houston", "dallas", "New york"],
+    y: [3.5, 6, 7],
+    name: '2016',
+    type: 'bar'
+};
+
+
+let trace2 = {
+    x: ["houston", "dallas", "New york"],
+    y: [3.5, 6, 7],
+    name: '2017',
+    type: 'bar'
+};
+
+let data = [trace1, trace2];
+
+// let layout = { barmode: 'stack' };
+
+// Plotly.newPlot('bar', data, layout);
+Plotly.newPlot('bar', data);
+
+
 // function init() {
 //     console.log(filterid("snow"))
 
