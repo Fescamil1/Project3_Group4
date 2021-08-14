@@ -15,7 +15,7 @@ from flask_cors import CORS
 
 # Database Setup
 engine = create_engine(
-    'postgresql://postgres:Mobil1234#@localhost:5432/weather_db')
+    'postgresql://postgres:postgres@localhost:5432/weather_db')
 connection = engine.connect()
 
 Base = automap_base()
