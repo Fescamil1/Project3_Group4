@@ -76,7 +76,7 @@ def weatherhist_func():
         weather_dict["eventid"] = eventid
         all_weather_list.append(weather_dict)
 
-    response = jsonify({all_weather_list})
+    response = jsonify(all_weather_list)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -107,7 +107,7 @@ def summaryview_func():
         us_summary_view["lng"] = float(lng)
         all_summary_view_list.append(us_summary_view)
 
-    response = jsonify({all_summary_view_list})
+    response = jsonify(all_summary_view_list)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
