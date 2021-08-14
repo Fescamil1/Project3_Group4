@@ -11,11 +11,7 @@ let json = './resources/weatherhist.js'
 
 // let url = "https://127.0.0.1:5000/api/v1.0/weatherhist"
 
-
-
-d3.json(json).then(function (data) {
-    console.log(data);
-
+function init() {
     let weather_events = ['Rain', 'Storm', 'Cold', 'Hail', 'Snow', 'Precipitation', 'Fog',]
     let cities = ['New York', 'Philadelphia', 'Chicago', 'Houston', 'San Antonio', 'Dallas', 'Austin', 'Phoenix', 'Los Angeles', 'San Diego']
 
@@ -29,6 +25,24 @@ d3.json(json).then(function (data) {
         dropdownmenu.append("option").text(id).property("value", id);
     });
 
+    let first_event = "Rain"
+    let first_city = "Houston"
+    datafilter(first_event, first_city)
+};
+
+// d3.selectAll("#bar").on("change", updateplot);
+
+// function updateplot() {
+//     let update = d3.select("#selDataset1").node().value;
+
+//     d3.selectAll("#table").remove();
+
+//     filterid(update);
+// }
+
+d3.json(json).then(function (data) {
+    console.log(data);
+
     let summary = data.summaryview
 
     for (let i = 0; i < summary.length; i++) {
@@ -39,8 +53,9 @@ d3.json(json).then(function (data) {
         console.log("coordinates:", coordinates)
         L.marker(coordinates).bindPopup(
             "<h2>" + `${city}` + "</h2>").addTo(myMap);
-    };
+    }
 });
+
 
 let trace1 = {
 
@@ -65,6 +80,15 @@ let data = [trace1, trace2];
 // Plotly.newPlot('bar', data, layout);
 Plotly.newPlot('bar', data);
 
+function datafilter(event, city) {
+    let eventfiltered = summary.filter(weather => weather.type == event);
+    let cityfiltered = eventfiltered.filter(weather => weather.city == city);
+
+    console.log("filtered", cityfiltered)
+    return cityfiltered
+}
+
+init();
 
 // function init() {
 //     console.log(filterid("snow"))
