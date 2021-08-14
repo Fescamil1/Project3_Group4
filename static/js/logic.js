@@ -11,84 +11,82 @@ let json = './resources/weatherhist.js'
 
 // let url = "https://127.0.0.1:5000/api/v1.0/weatherhist"
 
-function init() {
-    let weather_events = ['Rain', 'Storm', 'Cold', 'Hail', 'Snow', 'Precipitation', 'Fog',]
-    let cities = ['New York', 'Philadelphia', 'Chicago', 'Houston', 'San Antonio', 'Dallas', 'Austin', 'Phoenix', 'Los Angeles', 'San Diego']
+let weather_events = ['Rain', 'Storm', 'Cold', 'Hail', 'Snow', 'Precipitation', 'Fog',]
+let cities = ['New York', 'Philadelphia', 'Chicago', 'Houston', 'San Antonio', 'Dallas', 'Austin', 'Phoenix', 'Los Angeles', 'San Diego']
 
-    weather_events.forEach(id => {
-        let dropdownmenu = d3.select("#selDataset1")
-        dropdownmenu.append("option").text(id).property("value", id);
-    });
-
-    cities.forEach(id => {
-        let dropdownmenu = d3.select("#selDataset2")
-        dropdownmenu.append("option").text(id).property("value", id);
-    });
-
-    let first_event = "Rain"
-    let first_city = "Houston"
-    datafilter(first_event, first_city)
-};
-
-// d3.selectAll("#bar").on("change", updateplot);
-
-// function updateplot() {
-//     let update = d3.select("#selDataset1").node().value;
-
-//     d3.selectAll("#table").remove();
-
-//     filterid(update);
-// }
-
-d3.json(json).then(function (data) {
-    console.log(data);
-
-    let summary = data.summaryview
-
-    for (let i = 0; i < summary.length; i++) {
-
-        let coordinates = [summary[i].lat, summary[i].lng]
-        let city = summary[i].city
-
-        console.log("coordinates:", coordinates)
-        L.marker(coordinates).bindPopup(
-            "<h2>" + `${city}` + "</h2>").addTo(myMap);
-    }
+weather_events.forEach(id => {
+    let dropdownmenu = d3.select("#selDataset1")
+    dropdownmenu.append("option").text(id).property("value", id);
 });
 
+cities.forEach(id => {
+    let dropdownmenu = d3.select("#selDataset2")
+    dropdownmenu.append("option").text(id).property("value", id);
+});
 
-let trace1 = {
+runupdate()
 
-    x: ["houston", "dallas", "New york"],
-    y: [3.5, 6, 7],
-    name: '2016',
-    type: 'bar'
-};
+d3.selectAll("#selDataset1").on("change", runupdate);
+d3.selectAll("#selDataset2").on("change", runupdate);
 
+function runupdate() {
+    let event = d3.select("#selDataset1").node().value;
+    let city = d3.select("#selDataset2").node().value;
 
-let trace2 = {
-    x: ["houston", "dallas", "New york"],
-    y: [3.5, 6, 7],
-    name: '2017',
-    type: 'bar'
-};
+    d3.json(json).then(function (data) {
+        console.log(data);
 
-let data = [trace1, trace2];
+        let summary = data.summaryview
 
-// let layout = { barmode: 'stack' };
+        for (let i = 0; i < summary.length; i++) {
 
-// Plotly.newPlot('bar', data, layout);
-Plotly.newPlot('bar', data);
+            let coordinates = [summary[i].lat, summary[i].lng]
+            let city = summary[i].city
 
-function datafilter(event, city) {
-    let eventfiltered = summary.filter(weather => weather.type == event);
-    let cityfiltered = eventfiltered.filter(weather => weather.city == city);
-
-    console.log("filtered", cityfiltered)
-    return cityfiltered
+            console.log("coordinates:", coordinates)
+            L.marker(coordinates).bindPopup(
+                "<h2>" + `${city}` + "</h2>").addTo(myMap);
+        }
+        barchart(summary, event, city)
+    });
 }
 
-init();
+function barchart(dataset, event, city) {
+    let eventfiltered = dataset.filter(weather => weather.type == event);
+    let ev_city_fil = eventfiltered.filter(weather => weather.city == city);
+
+    let years = []
+    let avgs = []
+
+    ev_city_fil.forEach(function (bar) {
+        years.push(bar.year)
+        avgs.push(bar.avg_perc_year)
+    })
+
+    //getting the bar chart 
+    var trace = [
+        {
+            x: years,
+            y: avgs,
+            type: 'bar',
+            marker: {
+                color: 'purple'
+            }
+        }
+    ];
+    var layout = {
+        title: `% Days of ${event} in ${city}`,
+        xaxis: {
+            title: 'Year'
+        },
+        yaxis: {
+            title: '% Days'
+        }
+    }
+    Plotly.newPlot('bar', trace, layout)
+};
+
+
 
 // function init() {
 //     console.log(filterid("snow"))
