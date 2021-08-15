@@ -1,3 +1,4 @@
+
 let myMap = L.map("map", {
     center: [39, -98],
     zoom: 3
@@ -37,7 +38,7 @@ function runupdate() {
         console.log(data);
 
         let summary = data
-
+        // Add markers for city 
         for (let i = 0; i < summary.length; i++) {
 
             let coordinates = [summary[i].lat, summary[i].lng]
@@ -47,7 +48,10 @@ function runupdate() {
             L.marker(coordinates).bindPopup(
                 "<h2>" + `${city}` + "</h2>").addTo(myMap);
         }
-        barchart(summary, event, city)
+        barchart(summary, event, city);
+
+        //Call create bubble Map and send summary data
+        createBubbleMap(summary);
     });
 }
 
@@ -84,4 +88,72 @@ function barchart(dataset, event, city) {
         }
     }
     Plotly.newPlot('bar', trace, layout)
+
 };
+
+
+
+function createBubbleMap(dataset) 
+{
+        //Render the second map
+        // Create an initial map object
+        // Set the longitude, latitude, and the starting zoom level
+        let myMap2 = L.map("bubble", {
+            center: [39, -98],
+            zoom: 4
+        });
+
+        // Add a tile layer (the background map image) to our map
+        // Use the addTo method to add objects to our map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(myMap2);
+
+       //Check to ensure we have data needed. 
+        console.log("data2",dataset);
+
+       
+        //data markers should reflect the duration of the event by radius and type of event by color. 
+        //Events lasting longer should appear darker in color.
+        function styleInfo(dataset) 
+        {
+            return {
+            opacity: 1,
+            fillOpacity: 0.8,
+            fillColor: eventColor(dataset.type),
+            color: "black",
+            radius: DurationRadius(dataset.avg_perc_year),
+            stroke: true,
+            weight: 0.5
+            };
+        }
+
+        // set the radius from duration
+        function DurationRadius(duration) 
+        {
+            if (duration === 0) {return 1;}
+            return duration * 10;
+        }
+
+        
+        function eventColor(event) 
+        {
+            switch(true) {
+            case event == 'Rain':
+                return "blue";
+            case event == 'Storm':
+                return "red";
+            case event == 'Cold':
+                return "purple";     
+            case event =='Hail':
+                return "pink";
+            case event =='Snow':
+                return "green";
+            case event =='Precipitation':
+                return "gold";
+            case event =='Fog':
+                return "yellow";
+        
+            }
+        }
+}
