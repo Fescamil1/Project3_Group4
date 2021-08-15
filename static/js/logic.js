@@ -9,7 +9,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // let json = './resources/weatherhist.js'
 
-let json = "https://127.0.0.1:5000/api/v1.0/summaryview"
+let json = "http://127.0.0.1:5000/api/v1.0/summaryview"
 
 let weather_events = ['Rain', 'Storm', 'Cold', 'Hail', 'Snow', 'Precipitation', 'Fog',]
 let cities = ['New York', 'Philadelphia', 'Chicago', 'Houston', 'San Antonio', 'Dallas', 'Austin', 'Phoenix', 'Los Angeles', 'San Diego']
