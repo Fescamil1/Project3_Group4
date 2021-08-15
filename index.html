@@ -40,10 +40,10 @@
         $("#table").dataTable({
             data: dataSource,
             columns: [
-                // { data: 'avg_perc_year' },
+                //{ data: 'index' },
                 { data: 'city' },
                 { data: 'duration' },
-                { data: 'index' },
+                { data: 'avg_perc_year' },
                 { data: 'lat' },
                 { data: 'lng' },
                 { data: 'type' },
@@ -66,7 +66,7 @@
         <h1> U.S. Weather 2016-2020</h1>
         <p>Use the interactive charts below to explore the dataset</p>
         <div style="margin: 0px; height: 100%"><img
-            style="-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 90%);transition: background-color 300ms;"
+            style="-webkit-user-select: none; margin: auto;background-color: hsl(0, 0%, 90%);transition: background-color 300ms;"
             src="https://raw.githubusercontent.com/dipu-bd/vue-skycons/master/images/icons.gif">
         </div>
 
@@ -112,14 +112,13 @@
 
     <div class="row">
       <div class="col-md-12">
-        <!--<div id="table"></div>-->
             <table id="table" class="display">
               <thead>
                   <tr>
-                      <!-- <th>AvgPerYear</th> -->
+                     <!--<th>Index</th>-->
                       <th>City</th>
-                      <th>Duration</th>
-                      <th>Index</th>
+                      <th>Duration in Days</th>
+                      <th>AvgPerYear</th>
                       <th>Lat</th>
                       <th>Lng</th>
                       <th>Type</th>
