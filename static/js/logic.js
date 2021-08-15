@@ -50,8 +50,8 @@ function runupdate() {
         }
         barchart(summary, event, city);
 
-        //Call create bubble Map and send summary data
-        createBubbleMap(summary);
+        //Call the functions to ceate the bubble map and send summary data
+        createBubbleMakers(summary);
     });
 }
 
@@ -90,29 +90,68 @@ function barchart(dataset, event, city) {
     Plotly.newPlot('bar', trace, layout)
 
 };
+//***********Bubble MAP Section ***************** */
+function createBubbleMakers(dataset) {
+        //pull items from dataset
+        var mapobjects = dataset;
+        //initialize arrays to hold the year data
+       // var markers2018 =[];
+        //var markers2019 =[];
+        var markers2020 =[];
 
+        // Loop through the mapobjects array.
+        for (var index = 0; index < mapobjects.length; index++) {
+            var object = mapobjects[index];
+            // For each station, create a marker, and bind a popup with the station's name.
+            if (object.year == "2020") {
+                var marker2020 = L.marker([object.lat, object.lng])
+              .bindPopup("<h3>" + object.city + "<h3><h3>% Per Year: " + object.avg_perc_year + "</h3>");
+        
+                 // Add the marker to the year array.
+                markers2020.push(marker2020);
+            }
+            
+          }
+          createBubbleMap(L.layerGroup(markers2020))
+}
 
-
-function createBubbleMap(dataset) 
-{
+function createBubbleMap(map2020) 
+{        
+        
         //Render the second map
         // Create an initial map object
         // Set the longitude, latitude, and the starting zoom level
         let myMap2 = L.map("bubble", {
             center: [39, -98],
-            zoom: 4
+            zoom: 4,
+            layers: [basemap, map2020]
         });
 
         // Add a tile layer (the background map image) to our map
         // Use the addTo method to add objects to our map
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        var basemap =L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+
+        // Create a baseMaps object to hold the base layer.
+        var baseMaps = {
+            "Base Map": basemap
+        };
+        // Create and layers per year for 2018-2020
+       var overlayMaps = {
+          // "Year 2018": map2018,
+           // "Year 2019": map2019,
+            "Year 2020": map2020
+        };
+        
+        // Create a layer control, and pass it  baseMaps and overlayMaps. Add the layer control to the map.
+        L.control.layers(baseMaps, overlayMaps, {
+            collapsed: false
         }).addTo(myMap2);
 
-       //Check to ensure we have data needed. 
-        console.log("data2",dataset);
 
-       
+
+
         //data markers should reflect the duration of the event by radius and type of event by color. 
         //Events lasting longer should appear darker in color.
         function styleInfo(dataset) 

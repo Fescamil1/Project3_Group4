@@ -9,17 +9,53 @@
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin="" />
-
   <!-- Our CSS -->
   <link rel="stylesheet" type="text/css" href="static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.min.css">
+  <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">  -->
+ 
 
   <!-- Plotly -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+  <script type="text/javascript">
+     function loadData() {
+        $.get("http://127.0.0.1:5000/api/v1.0/summaryview", function (data, status) {
+            //console.log(data);
+            displayTable(data);
+        });
+    }
+    function displayTable(dataSource) {
+
+        $("#table").dataTable({
+            data: dataSource,
+            columns: [
+                // { data: 'avg_perc_year' },
+                { data: 'city' },
+                { data: 'duration' },
+                { data: 'index' },
+                { data: 'lat' },
+                { data: 'lng' },
+                { data: 'type' },
+                { data: 'year' }
+            ],
+            "scrollY": "350px",
+            "scrollCollapse": true,
+            "paging": true
+        });
+    }
+
+  </script>
 
 </head>
 
@@ -76,7 +112,24 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div id="table"></div>
+        <!--<div id="table"></div>-->
+            <table id="table" class="display">
+              <thead>
+                  <tr>
+                      <!-- <th>AvgPerYear</th> -->
+                      <th>City</th>
+                      <th>Duration</th>
+                      <th>Index</th>
+                      <th>Lat</th>
+                      <th>Lng</th>
+                      <th>Type</th>
+                      <th>Year</th>
+                  </tr>
+                  </thead>  
+                </table>
+          <script type="text/javascript">
+            loadData();
+          </script>
       </div>
     </div>
 
