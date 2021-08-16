@@ -25,7 +25,7 @@ cities.forEach(id => {
     dropdownmenu.append("option").text(id).property("value", id);
 });
 
-runupdate()
+runupdate();
 
 d3.selectAll("#selDataset1").on("change", runupdate);
 d3.selectAll("#selDataset2").on("change", runupdate);
@@ -94,40 +94,182 @@ function barchart(dataset, event, city) {
 
 function createBubbleMap(dataset) 
 {        
-      
-        // Create an initial map object
-        // Set the longitude, latitude, and the starting zoom level
-        let myMap2 = L.map("bubble", {
-            center: [39, -98],
-            zoom: 4,
-        });
+  console.log(dataset);
+        // Define arrays to hold the event markers.
+        var  Rainmakers = [];
+        var StormMarkers = [];
+        var  Coldmakers = [];
+        var HailMarkers = [];
+        var  Snowmakers = [];
+        var PrecipitationMarkers = [];
+        var FogMarkers = [];
+        
+
+
+        for (var index = 0; index < dataset.length;index++)
+        {
+
+            if (dataset[index].year == "2020" && dataset[index].type=='Rain' )
+            {  
+        
+                Rainmakers.push(
+                    L.circle([dataset[index].lat, dataset[index].lng],{
+                        Opacity: 0.8,
+                        fillOpacity: 0.8,
+                        fillColor: eventColor(dataset[index].type),
+                        color: eventColor(dataset[index].type),
+                        radius: DurationRadius(dataset[index].duration),
+                        stroke: true,
+                        weight: 0.5
+                      })
+                );
+            }             
+
+            if (dataset[index].year == "2020" && dataset[index].type=='Storm' )
+            {  
+                
+                StormMarkers .push(
+                    L.circle([dataset[index].lat, dataset[index].lng],{
+                        Opacity: 0.8,
+                        fillOpacity: 0.8,
+                        fillColor: eventColor(dataset[index].type),
+                        color: eventColor(dataset[index].type),
+                        radius: DurationRadius(dataset[index].duration),
+                        stroke: true,
+                        weight: 0.5
+                      })
+                );
+            }             
+
+            if (dataset[index].year == "2020" && dataset[index].type=='Cold' )
+            {  
+                
+                Coldmakers.push(
+                    L.circle([dataset[index].lat, dataset[index].lng],{
+                        Opacity: 0.8,
+                        fillOpacity: 0.8,
+                        fillColor: eventColor(dataset[index].type),
+                        color: eventColor(dataset[index].type),
+                        radius: DurationRadius(dataset[index].duration),
+                        stroke: true,
+                        weight: 0.5
+                      })
+                );
+            }             
+            if (dataset[index].year == "2020" && dataset[index].type=='Hail' )
+            {  
+                
+                HailMarkers.push(
+                    L.circle([dataset[index].lat, dataset[index].lng],{
+                        Opacity: 0.8,
+                        fillOpacity: 0.8,
+                        fillColor: eventColor(dataset[index].type),
+                        color: eventColor(dataset[index].type),
+                        radius: DurationRadius(dataset[index].duration),
+                        stroke: true,
+                        weight: 0.5
+                      })
+                );
+            }             
+            if (dataset[index].year == "2020" && dataset[index].type=='Snow' )
+            {  
+                Snowmakers.push(
+                    L.circle([dataset[index].lat, dataset[index].lng],{
+                        Opacity: 0.8,
+                        fillOpacity: 0.8,
+                        fillColor: eventColor(dataset[index].type),
+                        color: eventColor(dataset[index].type),
+                        radius: DurationRadius(dataset[index].duration),
+                        stroke: true,
+                        weight: 0.5
+                      })
+                );
+            }             
+            if (dataset[index].year == "2020" && dataset[index].type=='Precipitation' )
+            {  
+                
+                PrecipitationMarkers.push(
+                    L.circle([dataset[index].lat, dataset[index].lng],{
+                        Opacity: 0.8,
+                        fillOpacity: 0.8,
+                        fillColor: eventColor(dataset[index].type),
+                        color: eventColor(dataset[index].type),
+                        radius: DurationRadius(dataset[index].duration),
+                        stroke: true,
+                        weight: 0.5
+                      })
+                );
+            }             
+            if (dataset[index].year == "2020" && dataset[index].type=='Fog' )
+            {  
+                
+                FogMarkers.push(
+                    L.circle([dataset[index].lat, dataset[index].lng],{
+                        Opacity: 0.8,
+                        fillOpacity: 0.8,
+                        fillColor: eventColor(dataset[index].type),
+                        color: eventColor(dataset[index].type),
+                        radius: DurationRadius(dataset[index].duration),
+                        stroke: true,
+                        weight: 0.5
+                      })
+                );
+            }             
+               
+           
+      } // end of for loop
+        
 
         // Add a tile layer (the background map image) to our map
         // Use the addTo method to add objects to our map
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        var street= L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(myMap2);;
+        }); //.addTo(myMap2);  
 
-        //data markers should reflect the duration of the event by radius and type of event by color. 
-        //Events lasting longer should appear darker in color.
-        function styleInfo(dataset) 
-        {
-            return {
-            opacity: 1,
-            fillOpacity: 0.8,
-            fillColor: eventColor(dataset.type),
-            color: "black",
-            radius: DurationRadius(dataset.avg_perc_year),
-            stroke: true,
-            weight: 0.5
-            };
-        }
+        // Create the separate layer groups
+        var rain = L.layerGroup(Rainmakers);
+        var storm = L.layerGroup(StormMarkers);
+        var cold = L.layerGroup(Coldmakers);
+        var hail = L.layerGroup(HailMarkers);
+        var snow = L.layerGroup(Snowmakers);
+        var perci = L.layerGroup(PrecipitationMarkers);
+        var fog = L.layerGroup(FogMarkers);
 
-        // set the radius from duration
+        // Create a baseMaps object.
+        var baseMaps = {
+            "Base Map": street,
+        };
+
+        // Create an overlay object.
+        var overlayMaps = {
+            "Rain": rain,
+            "Storm": storm,
+            "Cold": cold,
+            "Hail": hail,
+            "Snow": snow,
+            "Percipitation": perci,
+            "Fog": fog
+        };
+        
+
+         // Create an initial map object
+        // Set the longitude, latitude, and the starting zoom level
+        let myMap2 = L.map("bubble", {
+            center: [39, -98],
+            zoom: 4.3,
+            layers: [street, rain, storm, cold, hail, snow, perci, fog]
+        });
+
+        // Pass our map layers to our layer control.
+        // Add the layer control to the map.
+            L.control.layers(baseMaps, overlayMaps, {
+                collapsed: false
+            }).addTo(myMap2);
+
         function DurationRadius(duration) 
         {
             if (duration === 0) {return 1;}
-            return duration * 10;
+            return duration * 6000;
         }
 
         
@@ -145,10 +287,11 @@ function createBubbleMap(dataset)
             case event =='Snow':
                 return "green";
             case event =='Precipitation':
-                return "gold";
+                return "orange";
             case event =='Fog':
                 return "yellow";
         
             }
         }
 }
+

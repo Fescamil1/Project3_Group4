@@ -29,32 +29,31 @@
     src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
   <script type="text/javascript">
-     function loadData() {
-        $.get("http://127.0.0.1:5000/api/v1.0/summaryview", function (data, status) {
-            //console.log(data);
-            displayTable(data);
-        });
-    }
-    function displayTable(dataSource) {
+      function loadData() {
+          $.get("http://127.0.0.1:5000/api/v1.0/summaryview", function (data, status) {
+              //console.log(data);
+              displayTable(data);
+          });
+      }
+      function displayTable(dataSource) {
 
-        $("#table").dataTable({
-            data: dataSource,
-            columns: [
-                //{ data: 'index' },
-                { data: 'city' },
-                { data: 'duration' },
-                { data: 'avg_perc_year' },
-                { data: 'lat' },
-                { data: 'lng' },
-                { data: 'type' },
-                { data: 'year' }
-            ],
-            "scrollY": "350px",
-            "scrollCollapse": true,
-            "paging": true
-        });
-    }
-
+          $("#table").dataTable({
+              data: dataSource,
+              columns: [
+                  //{ data: 'index' },
+                  { data: 'city' },
+                  { data: 'duration' },
+                  { data: 'avg_perc_year' },
+                  { data: 'lat' },
+                  { data: 'lng' },
+                  { data: 'type' },
+                  { data: 'year' }
+              ],
+              "scrollY": "350px",
+              "scrollCollapse": true,
+              "paging": true
+          });
+      }
   </script>
 
 </head>
@@ -136,6 +135,7 @@
 
     <div class="row">
       <div class="col-md-12">
+        <h3>Duration of Weather Events in 2020</h3>
         <div id="bubble"></div>
       </div>
     </div>
